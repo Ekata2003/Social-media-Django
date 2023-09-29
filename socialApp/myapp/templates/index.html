@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
+</head>
+<body>
+<div>
+{% if user.is_authenticated %}
+<p>You are logged in as {{request.user}}</p>
+
+<form action="/logout" style="margin-top:30px;">
+    <input type="submit" value="Logout" id="logout">
+</form>
+
+<!--Create post form here-->
+<div class="container">
+    <h2>Create Post Here</h2>
+    <form action="{% url 'createPost' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="contentText" id="contentText" placeholder="Write something here...">
+        <input type="file" name="image" id="image">
+        <input type="submit" value="Post Now" id="postnow">
+    </form>
+</div>
+
+<!--div for showing posts-->
+<h2>Showing All Post Here</h2>
+{% for post in posts %}
+<div class="wrapper">
+    <a href="{% url 'profile' post.creater.username %}"><h3>{{post.creater.first_name}} {{post.creater.last_name}}</h3></a>
+    <p>{{post.date_created}}</p>
+    <h5>{{post.content_text}}</h5>
+    <img src="data:image/jpeg;base64,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" style="width:200px; height:200px;" alt="" srcset="">
+<!--    For likes and likes count increasing-->
+    {% if request.user in post.likers.all %}
+    <br><input type="button" onclick="location.href='{% url 'like' post.id %}';" value="UnLike" /><p>{{post.likers_count}} Likes</p>
+    {% endif %}
+    {% if request.user not in post.likers.all %}
+    <br><input type="button" onclick="location.href='{% url 'like' post.id %}';" value="Like" /><p>{{post.likers_count}} Likes</p>
+    {% endif %}
+<!--    For adding comment to post-->
+    <form method="post" action="{% url 'addComment' post.id  %}">
+        {% csrf_token %}
+        <input type="text" name="comment" id="comment">
+        <input type="submit" value="Add comment" id="comment">
+    </form>
+<!--    for showing comments and comments count-->
+    <h5>Showing recent {{post.comment_count}} comments</h5>
+    {% for comment in comments%}
+    {%if comment.post == post%}
+    <div class="comm" style="background: #ccc;">
+        <p>commented on: {{comment.comment_time}}</p>
+        <p>by: <a href="{% url 'profile' comment.commenter %}">{{comment.commenter}}</a></p>
+        <p>{{comment.comment_content}}</p>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <hr></hr>
+</div>
+{%endfor%}
+{% else %}
+<form action="/signup" method="post">
+    {% csrf_token %}
+    <input type="text" name="uname" id="uname" placeholder="uname">
+    <input type="text" name="fname"  id="fname" placeholder="fname">
+    <input type="text" name="lname"  id="lname" placeholder="lname">
+    <input type="email" name="email"  id="email" placeholder="emailId">
+    <input type="password" name="password" id="password" placeholder="pass">
+    <input type="submit" value="signUp" id="submit">
+</form>
+
+<form action="/login" method="post" style="margin-top:30px;">
+    {% csrf_token %}
+    <input type="text" name="unamelogin" id="unamelogin">
+    <input type="password" name="passwordlogin" id="passwordlogin" >
+    {% csrf_token %}
+    <input type="submit" value="Login" id="submitlogin">
+</form>
+{% endif %}
+</div>
+<div style="background:#ccc; width:50%; height:100%;">
+    <div style="margin-left:40px;">
+        <h2>User To Follow</h2>
+        {% for user in users %}
+        <div>
+            <a href="{% url 'profile' user.username %}"><h5>@{{user.username}}</h5></a>
+        <p>{{user.first_name}} {{user.last_name}}</p>
+        <hr>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
