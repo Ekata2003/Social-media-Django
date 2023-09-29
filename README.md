@@ -51,8 +51,4 @@ If you would like to contribute to this project, please follow these steps:
 ## Contributors
 
 Thank you to the following contributors who have helped improve this project:
-
-## Contributors
-
-Thank you to the following contributors who have helped improve this project:
 - [Prasad Chavan](https://github.com/prasad-chavan1)
