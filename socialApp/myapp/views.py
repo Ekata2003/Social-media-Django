@@ -145,3 +145,12 @@ def unfollow(request, username):
     else:
         print("not auth")
     return redirect('/'+username)
+
+@login_required
+def deleteComment(request, username):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            if request.user in post.commentors:
+                post.commentors.remove(request.user)
+    else:
+        print('not auth')
