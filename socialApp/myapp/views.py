@@ -35,26 +35,6 @@ def handleSignup(request):
         return HttpResponse('Not Allowed')
     return redirect('/')
 
-def handleLogin(request):
-    if request.method == 'POST':
-        # Getting all parameters
-        loginUname = request.POST.get('unamelogin')
-        loginPassword = request.POST.get('passwordlogin')
-        user = authenticate(username=loginUname, password=loginPassword)
-
-        if user is not None:
-            print('success')
-            login(request, user)
-        else:
-            return HttpResponse('Invalid try again')
-        return redirect('/')
-    else:
-        return HttpResponse('404 not found')
-
-def handleLogout(request):
-    logout(request)
-    return render(request, 'index.html')
-
 @login_required
 def createPost(request):
     if request.method == 'POST':
@@ -163,3 +143,24 @@ def editComment(request, username):
                 post.commentors.editComment(request.user)
     else:
         print('not auth')
+
+#Function for handling login request
+def handleLogin(request):
+    if request.method == 'POST':
+        # Getting all parameters
+        loginUname = request.POST.get('unamelogin')
+        loginPass = request.POST.get('pass')
+        user = authenticate(username=loginUname, password=loginPass)
+
+        if user is not None:
+            print('success')
+            login(request, user)
+        else:
+            return HttpResponse('Invalid try again')
+        return redirect('/')
+    else:
+        return HttpResponse('404 not found')
+
+def handleLogout(request):
+    logout(request)
+    return render(request, 'index.html')
