@@ -154,3 +154,12 @@ def deleteComment(request, username):
                 post.commentors.remove(request.user)
     else:
         print('not auth')
+
+@login_required
+def editComment(request, username):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            if request.user in post.commentors:
+                post.commentors.editComment(request.user)
+    else:
+        print('not auth')
